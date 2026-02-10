@@ -11,8 +11,12 @@ def load_model():
     print("[init] Importing chatterbox...", flush=True)
     from chatterbox.tts_turbo import ChatterboxTurboTTS
 
+    print("[init] Resolving cached model path...", flush=True)
+    from huggingface_hub import snapshot_download
+    local_path = snapshot_download('ResembleAI/chatterbox-turbo', local_files_only=True)
+
     print("[init] Loading model...", flush=True)
-    model = ChatterboxTurboTTS.from_pretrained(device='cuda')
+    model = ChatterboxTurboTTS.from_local(local_path, device='cuda')
 
     print("[init] Model ready.", flush=True)
 
