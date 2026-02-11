@@ -19,6 +19,9 @@ RUN python -c "from huggingface_hub import snapshot_download; \
 snapshot_download('ResembleAI/chatterbox-turbo', \
 allow_patterns=['*.safetensors','*.json','*.txt','*.pt','*.model'])"
 
+RUN python -c "from resemble_enhance.enhancer.download import download; \
+from pathlib import Path; download(Path('/models/enhancer'))"
+
 COPY handler.py /handler.py
 
 CMD ["python", "-u", "/handler.py"]
