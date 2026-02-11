@@ -1,6 +1,6 @@
 FROM madiator2011/better-pytorch:cuda12.4-torch2.6.0
 
-RUN apt-get update && apt-get install -y libsndfile1 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libsndfile1 git git-lfs && rm -rf /var/lib/apt/lists/*
 
 RUN pip install chatterbox-tts --no-cache-dir --no-deps
 
@@ -20,7 +20,7 @@ snapshot_download('ResembleAI/chatterbox-turbo', \
 allow_patterns=['*.safetensors','*.json','*.txt','*.pt','*.model'])"
 
 RUN python -c "from resemble_enhance.enhancer.download import download; \
-from pathlib import Path; download(Path('/models/enhancer'))"
+run_dir = download(); print(f'Downloaded to: {run_dir}')"
 
 COPY handler.py /handler.py
 

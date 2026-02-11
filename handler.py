@@ -80,10 +80,11 @@ def handler(job):
             min_p=min_p,
         )
 
-        from pathlib import Path
-        from resemble_enhance.denoiser.inference import denoise as re_denoise
+        from resemble_enhance.enhancer.inference import denoise as re_denoise
+        from resemble_enhance.enhancer.download import REPO_DIR
+        run_dir = REPO_DIR / "enhancer_stage2"
         audio_1d = audio.cpu().squeeze(0)
-        audio_1d, output_sr = re_denoise(audio_1d, model.sr, Path('/models/enhancer'), 'cuda')
+        audio_1d, output_sr = re_denoise(audio_1d, model.sr, device='cuda', run_dir=run_dir)
         audio = audio_1d.unsqueeze(0).cpu()
 
         buf = io.BytesIO()
