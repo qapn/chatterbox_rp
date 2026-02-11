@@ -79,8 +79,14 @@ def handler(job):
             top_k=top_k,
             min_p=min_p,
         )
+
+        from resemble_enhance.denoiser.inference import denoise as re_denoise
+        audio_1d = audio.cpu().squeeze(0)
+        audio_1d, output_sr = re_denoise(audio_1d, model.sr, device='cuda')
+        audio = audio_1d.unsqueeze(0).cpu()
+
         buf = io.BytesIO()
-        torchaudio.save(buf, audio.cpu(), model.sr, format='wav')
+        torchaudio.save(buf, audio, output_sr, format='wav')
         buf.seek(0)
         audio_base64 = base64.b64encode(buf.read()).decode('utf-8')
     except Exception as e:
@@ -91,7 +97,7 @@ def handler(job):
 
     return {
         'audio_base64': audio_base64,
-        'sample_rate': model.sr,
+        'sample_rate': output_sr,
         'format': 'wav',
     }
 
