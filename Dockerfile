@@ -13,7 +13,7 @@ RUN pip install "numpy>=1.24.0,<1.26.0" librosa==0.11.0 torchaudio==2.6.0 \
 
 RUN pip install resemble-enhance --no-cache-dir --no-deps
 
-RUN pip install scipy resampy --no-cache-dir
+RUN pip install scipy resampy deepspeed --no-cache-dir
 
 RUN python -c "from huggingface_hub import snapshot_download; \
 snapshot_download('ResembleAI/chatterbox-turbo', \
